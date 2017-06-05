@@ -24,28 +24,73 @@ Student_RPT_05是現時台灣各大專院校外藉學生資料包括人數國藉
 ```{r}
 #這是R Code Chunk
 library(readr)
-File_1940 <- read_csv("~/Desktop/bigdata/File_1940.csv")
+File_1940 <- read_csv("~/Desktop/bigdata/File_1940.csv",skip = 3)
+
+
 visitorstatictis1 <- read_csv("~/Desktop/bigdata/visitorstatictis1.csv")
-Student_RPT_05 <- read_csv("~/Desktop/bigdata/Student_RPT_05.csv",skip = 2)
+
+
+Student_RPT_05 <- read_csv("~/Desktop/bigdata/Student_RPT_05.csv")
+
 ```
 
+
 ## 資料處理與清洗
+```{r}
+
+#資料清洗
+names(File_1940)[1] <-"學年度"
+names(File_1940)[2] <-"總計"
+names(File_1940)[3] <-"計"
+names(File_1940)[4] <-"公私立大學"
+File_1940 <- File_1940[-1,]
+
+visitorstatictis1 <- visitorstatictis1[-1,]
+visitorstatictis1 <- visitorstatictis1[-1,]
+names(visitorstatictis1)[1] <-"year"
+names(visitorstatictis1)[2] <-"總計人數"
+names(visitorstatictis1)[3] <-"成長率"
+names(visitorstatictis1)[4] <-"指數"
+names(visitorstatictis1)[5] <-"外籍旅客人數"
+names(visitorstatictis1)[6] <-"外籍旅客成長率"
+names(visitorstatictis1)[7] <-"外籍旅客指數"
+names(visitorstatictis1)[8] <-"華僑旅客人數"
+names(visitorstatictis1)[9] <-"華僑旅客成長率"
+names(visitorstatictis1)[10] <-"華僑旅客指數"
+
+Student_RPT_05$X1 <- NULL
+Student_RPT_05 <- Student_RPT_05[-1,]
+Student_RPT_05 <- Student_RPT_05[-1,]
+Student_RPT_05 <- Student_RPT_05[-1,]
+names(Student_RPT_05)[1] <-"學年度"
+names(Student_RPT_05)[2] <-"設立別"
+names(Student_RPT_05)[3] <-"學校類別"
+names(Student_RPT_05)[4] <-"學校代碼"
+names(Student_RPT_05)[5] <-"學校名稱"
+names(Student_RPT_05)[6] <-"系所代碼"
+names(Student_RPT_05)[7] <-"系所名稱"
+names(Student_RPT_05)[8] <-"學制"
+names(Student_RPT_05)[9] <-"僑生總計"
+names(Student_RPT_05)[10] <-"僑生男"
+names(Student_RPT_05)[11] <-"僑生女"
+names(Student_RPT_05)[12] <-"港澳生總計"
+names(Student_RPT_05)[13] <-"港澳生男"
+names(Student_RPT_05)[14] <-"港澳生女"
+
+
 
 #各級學校僑生現況
-presentofoversea<-head(File_1940[order(File_1940$"各級學校及海青班在學僑生人數",decreasing = T),],10)
-View(presentofoversea)
+presentofoversea<-head(File_1940[order(File_1940$"學年度",decreasing = T),],10)
 
 #國立大學僑生現況
-presentofnational<-Student_RPT_05[grepl("公立",Student_RPT_05$"學校"),]
-View(presentofnational)
+presentofnational<-Student_RPT_05[grepl("公立",Student_RPT_05$"設立別"),]
 
 #私立大學僑生現況
-presentofprivate<-Student_RPT_05[grepl("私立",Student_RPT_05$"學校"),]
-View(presentofprivate)
+presentofprivate<-Student_RPT_05[grepl("私立",Student_RPT_05$"設立別"),]
 
 #長庚大學僑生現況
 test105<-Student_RPT_05[grepl("105",Student_RPT_05$"學年度"),]
-testcgu<-test105[grepl("長庚大學",test105$X6),]
+testcgu<-test105[grepl("長庚大學",test105$"學校名稱"),]
 
 knitr::kable(
   head(presentofoversea)
@@ -63,6 +108,7 @@ knitr::kable(
   head(testcgu[order(testcgu$"學制",decreasing = T),],)
 )
 ```
+
 
 ## 探索式資料分析
 圖文並茂圖文並茂
